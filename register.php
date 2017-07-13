@@ -1,6 +1,8 @@
 <?php
 require 'config/user.php';
 require 'config/config.php';
+$conn = new PDO('mysql:host='. DB_HOST .';dbname='. DB_DB, DB_USER, DB_PASS);
+//$user = user::loadUserById($conn, 1);
 
         
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -8,10 +10,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $userName = $_POST['userName'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $newUser = new User;
         try{
-            $conn = new PDO('mysql:host='. DB_HOST .';dbname='. DB_DB, DB_USER, DB_PASS);
-            $newUser = new User;
+            $newUser = new user();
             $newUser->setEmail($email);
             $newUser->setUserName($userName);
             $newUser->setPass($password);
@@ -21,6 +21,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
     }
 }
+    
 ?>
 <!doctype html>
 <html lang="en">
@@ -29,11 +30,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Zadanie 3 - formularze dodawania do bazy</title>
+    <title>Rejestracja</title>
 </head>
 <body>
     <div>
-        <form action="index.php" method="POST">
+        <form action="register.php" method="POST">
             <fieldset>
                 <legend>Rejestracja użytkownika</legend>
                 <label>Wprowadź imię:</label>
@@ -46,5 +47,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             </fieldset>
         </form>
     </div>
+    <?php
+    
+    ?>
 </body>
 </html>
