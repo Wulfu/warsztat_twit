@@ -1,10 +1,12 @@
 <?php
-require 'config/user.php';
-require 'config/config.php';
+session_start();
+require __DIR__.'/../config/user.php';
+require __DIR__.'/../config/config.php';
 $conn = new PDO('mysql:host='. DB_HOST .';dbname='. DB_DB, DB_USER, DB_PASS);
-//$user = user::loadUserById($conn, 1);
 
-        
+if(!isset($_SESSION['id'])){
+    $_SESSION['id'] = -1;
+}        
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['userName']) && isset($_POST['email']) && isset($_POST['password'])){
         $userName = $_POST['userName'];
@@ -16,9 +18,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $newUser->setUserName($userName);
             $newUser->setPass($password);
             $newUser->saveToDB($conn);
+            $loggedUser = User::loadUserByEmail($conn, $newUser->getEmail());
+            $_SESSION['id'] = $loggedUser->getId();
+            header("Location: main.php");
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
+        
+        
+        
     }
 }
     
@@ -47,8 +55,5 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             </fieldset>
         </form>
     </div>
-    <?php
-    
-    ?>
 </body>
 </html>
