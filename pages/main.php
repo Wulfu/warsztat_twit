@@ -32,6 +32,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <title>Twitter</title>
 </head>
 <body>
+    <?php
+    $idToRender = [
+        'id' => $_SESSION['id']
+    ];
+    echo render('templates/userEditLinkTemplate.html', $idToRender);
+    ?>
     <div>
         <form action="main.php" method="POST">
             <fieldset>

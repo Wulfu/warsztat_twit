@@ -29,7 +29,16 @@ if($_SESSION['id'] == -1){
                 $showedUserId = $_GET['id'];
                 $showedUser = User::loadUserById($conn, $showedUserId);
                 $emailData = ['email' => $showedUser->getEmail()];
-                echo render('templates/showedUserSite.html', $emailData);
+                $showedUserEmail = $emailData['email'];
+                if($_SESSION['id'] != $_GET['id']){
+                    echo render('templates/showedUserSite.html', $emailData);
+                }
+    ?>
+    
+    <h3>Here are all posts of <?php echo "$showedUserEmail" ?></h3>
+    
+    <?php
+                //loading and rendering posts
                 $showedUserPosts = PostWithEmail::loadAllUserPostsWithEmailOrderedByDate($conn, $showedUserId);
                 foreach($showedUserPosts as $post){
                     $postInfo = [
