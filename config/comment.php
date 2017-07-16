@@ -64,9 +64,6 @@ class Comment{
                     'created_at' => $this->creationDate, 
                     'content' => $this->content
                 ]);
-                
-            var_dump($result);
-            var_dump($stmt);
             if($result !== false){
                 $this->id = $conn->lastInsertId();
                 return true;
@@ -104,8 +101,8 @@ class Comment{
         }
         return null;
     }
-    static public function loadAllCommentsByPostId(PDO $conn, $id){
-        $stmt = "SELECT * FROM comment WHERE post_id=$id";
+    static public function loadAllCommentsByPostIdOrderByDate(PDO $conn, $id){
+        $stmt = "SELECT * FROM comment WHERE post_id=$id ORDER BY created_at DESC";
         $result = $conn->query($stmt);
         
         $ret = [];

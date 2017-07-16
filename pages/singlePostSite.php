@@ -24,8 +24,20 @@ if($_SESSION['id'] == -1){
 </head>
 <body>
 <?php
-//renderowanie postu
-if($_SERVER['REQUEST_METHOD'] == 'GET'){
+//saving comment to DB
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            if(isset($_POST['newCommentContent']) && strlen($_POST['newCommentContent']) <= 140 && $_SESSION['id'] != -1){
+                $newComment = new Comment;
+                $newComment->setUserId($_SESSION['id']);
+                $newComment->setPostId($_GET['id']);
+                $newComment->setCreationDate(date('Y-m-d G:i:s', time()));
+                $newComment->setContent($_POST['newCommentContent']);
+                $newComment->saveToDB($conn);
+                header("Location: http://" . "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+            }
+        }
+//render post
+if($_SERVER['REQUEST_METHOD'] === 'GET'){
     if(isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0){
         $id = $_GET['id'];
         $post = Post::loadPostById($conn, $id);
@@ -38,10 +50,16 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         ];
         echo render('templates/singlePostTemplate.html', $postInfo);
 ?>
+   
     <h3>Komentarze:</h3>
+    <form method="POST">
+        <label>Comment on this</label>
+        <input type="text" name="newCommentContent" id="newCommentContent" maxlength="140"/>
+        <input type="submit" value="Send comment"/>
+    </form>
 <?php
 //renderowanie komentarzy
-        $postComments = Comment::loadAllCommentsByPostId($conn, $id);
+        $postComments = Comment::loadAllCommentsByPostIdOrderByDate($conn, $id);
         foreach($postComments as $comment){
             $commentAuthor = User::loadUserById($conn, $comment->getUserId());
             $commentInfo = [

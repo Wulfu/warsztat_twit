@@ -13,7 +13,7 @@ if($_SESSION['id'] == -1){
     header('Location: login.php');
 }
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if(isset($_POST['post']) && $_SESSION['id'] > -1){
+    if(isset($_POST['post']) && $_SESSION['id'] != -1){
         $newPost = new Post;
         $newPost->setContent($_POST['post']);
         $newPost->setCreationDate(date('Y-m-d G:i:s', time()));
