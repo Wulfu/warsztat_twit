@@ -14,10 +14,17 @@ class PostWithEmail extends Post{
         $this->email = $email;
         return $this;
     }
-
+    
+//    static public function loadPostWithEmailById(PDO $conn, $id){
+//        $stmt = "SELECT user.email as email, post.id as id, post.content as content, post.creationDate as creationDate, post.user_id as userId"
+//                . " FROM post JOIN user ON user.id=post.user_id";
+//        $result = $conn->query($stmt);
+//        
+//    }
+    
     static public function loadAllPostsWithEmailOrderedByDate($conn){
-        $stmt = ('SELECT user.email as email, post.id as id, post.content as content, post.creationDate as creationDate,'
-                . ' post.user_id as userId FROM post JOIN user ON user.id=post.user_id ORDER BY post.creationDate DESC');
+        $stmt = 'SELECT user.email as email, post.id as id, post.content as content, post.creationDate as creationDate,'
+                . ' post.user_id as userId FROM post JOIN user ON user.id=post.user_id ORDER BY post.creationDate DESC';
         $result = $conn->query($stmt);
         $ret = [];
         if($result !== false && $result->rowCount() > 0){

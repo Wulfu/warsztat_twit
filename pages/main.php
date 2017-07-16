@@ -53,7 +53,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     'creationDate' => $post->getCreationDate(),
                     'user_id' => $post->getUserId()
                 ];
-                echo render('templates/singlePostTemplate.html', $postInfo);
+                echo render('templates/postTemplate.html', $postInfo);
             }
         ?>
     </div>

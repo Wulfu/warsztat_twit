@@ -39,7 +39,7 @@ if($_SESSION['id'] == -1){
                         'creationDate' => $post->getCreationDate(),
                         'user_id' => $post->getUserId()
                     ];
-                    echo render('templates/singlePostTemplate.html', $postInfo);
+                    echo render('templates/postTemplate.html', $postInfo);
                 }
             }
         }
